@@ -1,4 +1,4 @@
-# Realizando data Cleaning/Wrangling para tratamento dos dados.
+# Data Cleaning/Wrangling para tratamento dos dados.
 
 ## Contexto
 
