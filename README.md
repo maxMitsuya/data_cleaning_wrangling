@@ -1,83 +1,96 @@
-# Data Cleaning/Wrangling para tratamento dos dados.
+# Análise RFM para E-commerce
 
-## Contexto
+![GitHub](https://img.shields.io/badge/-GitHub-181717?style=flat-square&logo=github)
+![Python](https://img.shields.io/badge/-Python-3776AB?style=flat-square&logo=python&logoColor=white)
+![Pandas](https://img.shields.io/badge/-Pandas-150458?style=flat-square&logo=pandas)
+![Scikit-learn](https://img.shields.io/badge/-Scikit--learn-F7931E?style=flat-square&logo=scikit-learn)
 
-Uma empresa do ramo de e-commerce contratou você para levantar os indicadores de recência, frequência e ticket médio (RFM) dos seus clientes. O objetivo é entender melhor a relação entre as variáveis presentes nos registros e identificar os fatores que mais impactam na geração de leads. Além disso, a empresa busca criar um modelo de predição de valores para estimar o retorno de vendas que pode ser gerado a partir de um determinado investimento em publicidade.
+Projeto completo de análise e tratamento de dados para cálculo de indicadores RFM (Recência, Frequência, Ticket Médio) em um dataset de e-commerce internacional.
 
-## Sobre os Dados
+## 📊 Resultados e Aplicações
 
-O dataset contém informações de compras de um e-commerce em 37 países. As colunas incluem:
+**Principais outputs gerados:**
+- 🧹 Dataset tratado e pronto para análise
+- 📈 Indicadores RFM calculados para cada cliente
+- 📊 Visualizações estratégicas de vendas
+- 🔍 Insights sobre comportamento do consumidor
 
-- **InvoiceNo**: Número da fatura.
-- **StockCode**: Código do produto.
-- **Description**: Descrição do produto.
-- **Quantity**: Quantidade de produtos comprados.
-- **InvoiceDate**: Data da compra.
-- **UnitPrice**: Preço unitário do produto.
-- **CustomerID**: Identificação do cliente.
-- **Country**: País onde a compra foi realizada.
+**Aplicações práticas:**
+- 🎯 Segmentação de clientes para campanhas de marketing
+- 📉 Identificação de tendências de compra
+- 💰 Otimização de investimento em publicidade
+- 🏆 Priorização de clientes VIP
+- 🔄 Detecção de clientes em risco de churn
 
-## Etapas de Desenvolvimento
+## 🛒 Contexto do Projeto
 
-### 1. Carregando o Arquivo e Realizando Primeiras Análises
+Análise de dados transacionais de um e-commerce internacional com operação em 37 países, com os seguintes objetivos:
+1. Calcular indicadores RFM para segmentação de clientes
+2. Identificar padrões de compra
+3. Desenvolver modelo preditivo para estimativa de ROI em publicidade
 
-- **Bibliotecas Utilizadas**: `numpy`, `pandas`, `seaborn`, `matplotlib`, `sidetable`, `ydata-profiling`, `missingno`, `ipywidgets`, `sklearn`.
-- **Carregamento do Dataset**: O dataset foi carregado e analisado para verificar a distribuição dos dados e os tipos de colunas.
-- **Análise Inicial**: Verificou-se que as colunas `Quantity` e `UnitPrice` apresentam valores negativos, desvio padrão superior à média e possivelmente outliers. Além disso, as colunas `Description`, `CustomerID` e `Country` possuem valores nulos.
+## 📁 Sobre os Dados
 
-### 2. Tratamento de Valores Faltantes em `CustomerID`
+Dataset contendo registros de compras com as seguintes características:
 
-- **Identificação de Valores Nulos**: Utilizou-se a biblioteca `sidetable` para identificar a quantidade de valores nulos em cada coluna.
-- **Remoção de Valores Nulos**: Os valores nulos na coluna `CustomerID` foram removidos, pois são essenciais para a análise.
+| Coluna | Descrição | Tipo Original | Problemas Identificados |
+|--------|-----------|---------------|-------------------------|
+| InvoiceNo | Número da fatura | object | - |
+| StockCode | Código do produto | object | - |
+| Description | Descrição do produto | object | Valores nulos |
+| Quantity | Quantidade comprada | int64 | Valores negativos e outliers |
+| InvoiceDate | Data da compra | object | - |
+| UnitPrice | Preço unitário | float64 | Valores negativos e outliers |
+| CustomerID | ID do cliente | float64 | Valores nulos |
+| Country | País da compra | object | - |
 
-### 3. Tratamento de Preços Unitários e Quantidades Inválidas
+## 🔧 Processo de Data Wrangling
 
-- **Filtragem de Valores Negativos**: Foram removidas as linhas com valores negativos ou nulos nas colunas `UnitPrice` e `Quantity`.
-- **Resultado**: O dataset foi limpo de valores inválidos, garantindo a consistência dos dados.
+### 1️⃣ Pré-processamento Inicial
+- Carregamento do dataset e análise exploratória
+- Identificação de valores nulos, outliers e dados inconsistentes
+- Utilização de bibliotecas como `missingno` e `ydata-profiling` para análise
 
-### 4. Verificação de Duplicatas
+### 2️⃣ Tratamento de Dados
+- **Valores nulos**: Remoção de registros sem CustomerID
+- **Dados inconsistentes**:
+  - Filtragem de valores negativos em Quantity e UnitPrice
+  - Tratamento de outliers nas colunas numéricas
+- **Tipagem correta**:
+  - Conversão de CustomerID para int64
+  - Conversão de InvoiceDate para datetime
 
-- **Identificação de Duplicatas**: Foram identificadas e removidas as linhas duplicadas no dataset.
-- **Resultado**: O dataset foi limpo de duplicatas, garantindo a unicidade dos registros.
+### 3️⃣ Engenharia de Features
+- Criação da coluna `Total_Compra` (Quantity × UnitPrice)
+- Cálculo dos indicadores RFM:
+  - **Recência**: Dias desde última compra
+  - **Frequência**: Número de compras realizadas
+  - **Ticket Médio**: Valor médio gasto por compra
 
-### 5. Alteração de Tipos de Dados
+### 4️⃣ Visualização de Dados
+Principais visualizações geradas:
+1. Top 10 países por volume de vendas
+2. Produtos mais vendidos
+3. Sazonalidade de vendas (mensal)
+4. Distribuição de valores RFM
+5. Comparativo de vendas por país/mês
 
-- **Conversão de Tipos**: A coluna `CustomerID` foi convertida para o tipo `int64`, e a coluna `InvoiceDate` foi convertida para o tipo `datetime`.
-- **Resultado**: Os tipos de dados foram ajustados para facilitar análises posteriores.
+## 🛠️ Tecnologias Utilizadas
 
-### 6. Tratamento de Outliers
+```python
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+from ydata_profiling import ProfileReport
+from sklearn.preprocessing import StandardScaler
+```
+## 📌 Conclusões e Próximos Passos
 
-- **Identificação de Outliers**: Foram identificados outliers nas colunas `Quantity` e `UnitPrice`.
-- **Limitação de Valores**: Valores superiores a 10 para `Quantity` e superiores a 5 para `UnitPrice` foram limitados para evitar distorções nas análises.
-- **Resultado**: Os outliers foram tratados, garantindo uma distribuição mais equilibrada dos dados.
-
-### 7. Adição de Coluna de Total de Compra
-
-- **Cálculo do Total de Compra**: Foi adicionada uma nova coluna `Total_Compra`, que representa o valor total de cada compra (`Quantity * UnitPrice`).
-- **Resultado**: A nova coluna facilita a análise do valor total das vendas.
-
-### 8. Cálculo da Última Data
-
-- **Identificação da Última Data**: A última data de compra no dataset foi identificada para ser usada no cálculo da recência.
-- **Resultado**: A última data foi armazenada para uso posterior.
-
-### 9. Plotagem de Gráficos
-
-- **Top 10 Países com Maior Valor em Vendas**: Gráfico de barras mostrando os países com maior valor total de vendas.
-- **Top 10 Produtos Mais Vendidos**: Gráfico de barras mostrando os produtos mais vendidos.
-- **Valor Total de Vendas por Mês**: Gráfico de barras mostrando o valor total de vendas por mês.
-- **Valor de Venda Total por Mês e por País**: Gráfico de barras mostrando o valor total de vendas por mês, considerando apenas os top 10 países.
-
-### 10. Cálculo de RFM (Recência, Frequência, Ticket Médio)
-
-- **Cálculo de RFM**: Foram calculados os indicadores RFM para cada cliente:
-  - **Recência**: Número de dias desde a última compra.
-  - **Frequência**: Número de compras realizadas.
-  - **Ticket Médio**: Valor médio gasto por compra.
-- **Resultado**: O dataset foi enriquecido com os indicadores RFM, que serão usados para análises e modelagem futuras.
-
-## Conclusão
-
-O dataset foi limpo, tratado e enriquecido com novas colunas e indicadores. Os gráficos gerados fornecem insights valiosos sobre o comportamento dos clientes e as tendências de vendas. Os indicadores RFM serão úteis para a criação de modelos de predição e estratégias de marketing mais eficazes.
-
----
+### 🔍 Insights Obtidos
+- 🌎 **Países com maior potencial**: Identificação clara dos mercados com melhor performance de vendas e maior ticket médio
+- 📅 **Sazonalidade**: Reconhecimento de padrões cíclicos e períodos de alta/média/baixa temporada
+- 🎯 **Segmentação de clientes**: Classificação eficiente dos consumidores por:
+  - Valor gasto (Ticket Médio)
+  - Frequência de compras
+  - Tempo desde última compra (Recência)
